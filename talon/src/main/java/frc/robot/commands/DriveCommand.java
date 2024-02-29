@@ -21,13 +21,6 @@ public class DriveCommand extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
-  public Command setSpeedCommand(double speed){
-    return run(() -> setSpeed(speed));
-  }
-
-  public void setSpeed(double speed){
-    Constants.kDrivetrain.kspeedlimitConstant = speed;
-  }
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
@@ -35,13 +28,13 @@ public class DriveCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    train.drive(joy.getRawAxis(0),joy.getRawAxis(2));
+    train.drive(joy.getRawAxis(0) * Constants.kDrivetrain.kspeedlimitConstant,joy.getRawAxis(2) * Constants.kDrivetrain.kspeedlimitConstant);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    train.drive(0 * Constants.kDrivetrain.kspeedlimitConstant, 0 * Constants.kDrivetrain.kspeedlimitConstant);
+    train.drive(0 , 0);
   }
   // Returns true when the command should end.
   @Override
